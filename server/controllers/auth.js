@@ -1,15 +1,16 @@
 import User from '../model/User.js'
 import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
 
 export const register = async (req, res) => {
     try {
-        const { name, email, password } = req.body
+        const { name, email } = req.body
 
         // simple validation
         if (
             !name && name.trim() === '' &&
             !email && email.trim() === '' &&
-            !password && password.length < 3
+            !req.body.password && req.body.password.length < 3
         ) {
             return res.status(400).send({ 
                 success: false,
@@ -18,28 +19,44 @@ export const register = async (req, res) => {
         }
 
         // check whether the user exists or not
-        let user = await User.findOne({ email: email })
+        let existsUser = await User.findOne({ email: email })
 
-        if(user) {
+        if(existsUser) {
             return res.status(401).send({ 
                 success: false,
                 message: 'User already exists'
             })
         } 
 
-        const hashPassword = bcrypt.hash(password, 10)
+        const salt = await bcrypt.genSalt(10)
+        const hash = await bcrypt.hash(req.body.password, salt)
 
         // save user
-        user = await User.create({
+        const doc = new User({
             name,
             email,
-            password: hashPassword
+            password: hash
         })
+
+        const user = await doc.save()
+
+        // create token
+        // save userId in the token, secret key and expire time
+        const token = jwt.sign({
+            _id: user._id
+        }, 
+        'secret123',
+        {
+            expiresIn: '30d'
+        })
+
+        const { password, ...userData } = user._doc
 
         return res.status(201).send({
             success: true, 
             message: 'User created',
-            user
+            ...userData,
+            token
         })
         
     } catch (error) {
@@ -52,12 +69,12 @@ export const register = async (req, res) => {
 }
 
 export const login = async (req, res) => {
-    const { email, password } = req.body
+    const { email } = req.body
 
     // simple validation
     if (
         !email && email.trim() === '' &&
-        !password && password.length < 3
+        !req.body.password && req.body.password.length < 3
     ) {
         return res.status(401).send({ 
             success: false,
@@ -65,35 +82,73 @@ export const login = async (req, res) => {
         })
     }
 
-    let existingUser
     try {
-        existingUser = await User.findOne({ email, password })
+        const user = await User.findOne({ email })
 
-        if (!existingUser) {
-            return res.status(401).send({ 
+        if (!user) {
+            return res.status(403).send({ 
                 success: false,
                 message: 'Wrong email or password'
             })
         } 
 
         // check password
-        const isMatch = await bcrypt.compare(password, existingUser.password)
-        if (!isMatch) {
-            return res.status(401).send({ 
+        const isValidPass = await bcrypt.compare(req.body.password, user._doc.password)
+        if (!isValidPass) {
+            return res.status(403).send({ 
                 success: false,
                 message: 'Wrong email or password'
             })
         } 
 
+        const token = jwt.sign({
+            _id: user._id
+        }, 
+        'secret123',
+        {
+            expiresIn: '30d'
+        })
+
+        const { password, ...userData } = user._doc
+
         return res.status(200).send({
             success: true, 
             message: 'Login successfull',
-            existingUser
+            ...userData,
+            token
         })
 
     } catch (error) {
         return res.status(500).send({ 
             message: 'Error in Login callback',
+            success: false,
+            error
+        })
+    }
+
+}
+
+export const me = async (req, res) => {
+    try {
+        const user = await User.findById(req.userId)
+
+        if (!user) {
+            return res.status(404).json({ 
+                message: 'User not found',
+            })
+        }
+
+        const { password, ...userData } = user._doc
+
+        return res.status(200).send({
+            success: true, 
+            message: 'Successfull',
+            ...userData,
+        })
+
+    } catch (error) {
+        return res.status(500).send({ 
+            message: 'Access Denied',
             success: false,
             error
         })
