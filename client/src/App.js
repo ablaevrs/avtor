@@ -1,11 +1,12 @@
-import './App.css';
+import React from 'react';
+import {Text, View} from 'react-native';
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      
-    </div>
+    <View>
+      <Text>App</Text>
+    </View>
   );
-}
+};
 
 export default App;
