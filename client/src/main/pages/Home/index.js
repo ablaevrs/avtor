@@ -3,15 +3,18 @@ import TopBanner from '../../components/TopBanner'
 import Trends from '../../components/Trends'
 import Sidebar from '../../components/Sidebar'
 import axios from 'axios'
+import { useDispatch } from 'react-redux'
+import { fetchPosts } from '../../../redux/slices/posts'
 
 export default function Home() {
-  const [post, setPost] = useState()
-  console.log(post)
+  const dispatch = useDispatch()
+
   useEffect(() => {
-    fetch('http://localhost:5000/posts')
-      .then((response) => response.json())
-      .then((data) => console.log(data))
-      .catch((error) => console.log(error));
+    dispatch(fetchPosts())
+    // fetch('http://localhost:5000/posts')
+    //   .then((response) => response.json())
+    //   .then((data) => console.log(data))
+    //   .catch((error) => console.log(error));
   }, [])
   
   return (
