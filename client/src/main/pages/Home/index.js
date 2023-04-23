@@ -1,9 +1,19 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import TopBanner from '../../components/TopBanner'
 import Trends from '../../components/Trends'
 import Sidebar from '../../components/Sidebar'
+import axios from 'axios'
 
 export default function Home() {
+  const [post, setPost] = useState()
+  console.log(post)
+  useEffect(() => {
+    fetch('http://localhost:5000/posts')
+      .then((response) => response.json())
+      .then((data) => console.log(data))
+      .catch((error) => console.log(error));
+  }, [])
+  
   return (
     <>
       <TopBanner />

@@ -94,7 +94,8 @@ export const getAllPosts = async (req, res) => {
     try {
         // для связи с колл Users указываем связь (тут мб массив связей):
         // через .populate('users')
-        const posts = await Post.find().populate('users').exec()
+        // const posts = await Post.find().populate('users').exec()
+        const posts = await Post.find()
 
         return res.status(200).send({
             success: true, 

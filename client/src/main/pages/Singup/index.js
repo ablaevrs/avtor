@@ -1,9 +1,7 @@
 import React, { useState } from 'react'
 import { TextInput, Button } from 'react-native'
 import TopBanner from '../../components/TopBanner'
-import Trends from '../../components/Trends'
 import Sidebar from '../../components/Sidebar'
-import axios from 'axios'
 
 export default function Signup() {
   const [name, setName] = useState('')
@@ -18,9 +16,6 @@ export default function Signup() {
       password
     }
     console.log('data', data)
-
-    await axios('http://localhost:5000/auth/register', data)
-
   }
 
   return (

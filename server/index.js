@@ -12,6 +12,9 @@ dotenv.config()
 const PORT = process.env.PORT || 5000
 
 const app = express()
+app.use(cors())
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 
 // create storage for files
 const storage = multer.diskStorage({
@@ -24,8 +27,6 @@ const storage = multer.diskStorage({
 })
 const upload = multer({ storage })
 
-app.use(cors())
-app.use(express.json())
 app.use('/uploads', express.static('uploads'))
 
 // create route for multer
@@ -36,7 +37,7 @@ app.post('/upload', upload.single('image'), (req, res) => {
 })
 
 app.use('/auth', authRoutes)
-app.use('/post', postRoutes)
+app.use('/posts', postRoutes)
 
 connectDB()
-app.listen(PORT, () => console.log('Server started'))
+app.listen(PORT, () => console.log(`Server started on the PORT ${PORT}`))
