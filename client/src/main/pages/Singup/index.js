@@ -22,17 +22,17 @@ export default function Signup() {
     <>
       <TopBanner />
 
-      <section class="section-sm">
-        <div class="container">
-          <div class="row justify-content-center">
-            <div class="col-lg-8  mb-5 mb-lg-0">
-              <div class="content mb-5">
+      <section className="section-sm">
+        <div className="container">
+          <div className="row justify-content-center">
+            <div className="col-lg-8  mb-5 mb-lg-0">
+              <div className="content mb-5">
                 <h2 id="we-would-love-to-hear-from-you">We would Love To Hear From You&hellip;.</h2>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Velit massa vitae felis augue. In venenatis scelerisque accumsan egestas mattis. Massa feugiat in sem pellentesque.</p>
               </div>
         
               <form method="POST" action="#">
-                <div class="form-group">
+                <div className="form-group">
                   <label for="name">Your Name (Required)</label>
                   <TextInput 
                     type="text" 
@@ -41,7 +41,7 @@ export default function Signup() {
                     placeholder="Your Name"
                   />
                 </div>
-                <div class="form-group">
+                <div className="form-group">
                   <label for="email">Your Email Address (Required)</label>
                   <TextInput 
                     type="email" 
@@ -50,7 +50,7 @@ export default function Signup() {
                     placeholder="Your Email"
                   />
                 </div>
-                <div class="form-group">
+                <div className="form-group">
                   <label for="email">Password</label>
                   <TextInput 
                     type="password" 
@@ -59,7 +59,7 @@ export default function Signup() {
                     placeholder="Your Password"
                   />
                 </div>
-                <Button title='Send now' class="btn btn-primary" onPress={onSubmit} />
+                <Button title='Send now' className="btn btn-primary" onPress={onSubmit} />
               </form>
 
             </div>

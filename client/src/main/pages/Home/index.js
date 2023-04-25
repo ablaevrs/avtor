@@ -15,28 +15,40 @@ export default function Home() {
   }, [dispatch])
 
   const { posts } = useSelector(state => state.posts)
+  console.log('posts', posts)
+
+  const isPostsLoading = posts.status === 'loading'
   
   return (
     <>
       <TopBanner />
       <Trends />
-      <section class="section-sm">
-        <div class="container">
-          <div class="row justify-content-center">
-            <div class="col-lg-8  mb-5 mb-lg-0">
-              <h2 class="h5 section-title">Recent Post</h2>
+      <section className="section-sm">
+        <div className="container">
+          <div className="row justify-content-center">
+            <div className="col-lg-8  mb-5 mb-lg-0">
+              <h2 className="h5 section-title">Recent Post</h2>
 
-              <Post />
+              { 
+                (
+                  isPostsLoading ? [...Array(5)] : posts.items.posts).map((item, index) => 
+                  isPostsLoading ? (
+                    <Post key={index} isLoading={true} />
+                  ) : (
+                    <Post item={item} />
+                  )
+                )
+              }
               
-              <ul class="pagination justify-content-center">
-                <li class="page-item page-item active ">
-                    <a href="#!" class="page-link">1</a>
+              <ul className="pagination justify-content-center">
+                <li className="page-item page-item active ">
+                    <a href="#!" className="page-link">1</a>
                 </li>
-                <li class="page-item">
-                    <a href="#!" class="page-link">2</a>
+                <li className="page-item">
+                    <a href="#!" className="page-link">2</a>
                 </li>
-                <li class="page-item">
-                    <a href="#!" class="page-link">&raquo;</a>
+                <li className="page-item">
+                    <a href="#!" className="page-link">&raquo;</a>
                 </li>
               </ul>
             </div>
