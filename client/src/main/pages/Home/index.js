@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react'
 import TopBanner from '../../components/TopBanner'
 import Trends from '../../components/Trends'
 import Sidebar from '../../components/Sidebar'
+import Post from '../../components/Post'
 import axios from 'axios'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { fetchPosts } from '../../../redux/slices/posts'
 
 export default function Home() {
@@ -11,85 +12,21 @@ export default function Home() {
 
   useEffect(() => {
     dispatch(fetchPosts())
-    // fetch('http://localhost:5000/posts')
-    //   .then((response) => response.json())
-    //   .then((data) => console.log(data))
-    //   .catch((error) => console.log(error));
-  }, [])
+  }, [dispatch])
+
+  const { posts } = useSelector(state => state.posts)
   
   return (
     <>
       <TopBanner />
       <Trends />
-
       <section class="section-sm">
         <div class="container">
           <div class="row justify-content-center">
             <div class="col-lg-8  mb-5 mb-lg-0">
               <h2 class="h5 section-title">Recent Post</h2>
 
-              <article class="card mb-4">
-                <div class="post-slider">
-                    <img src="images/post/post-10.jpg" class="card-img-top" alt="post-thumb" />
-                    <img src="images/post/post-1.jpg" class="card-img-top" alt="post-thumb" />
-                </div>
-                <div class="card-body">
-                    <h3 class="mb-3"><a class="post-title" href="post-elements.html">Elements That You Can Use In This Template.</a></h3>
-                    <ul class="card-meta list-inline">
-                    <li class="list-inline-item">
-                        <a href="author-single.html" class="card-meta-author">
-                        <img src="images/john-doe.jpg" alt="John Doe" />
-                        <span>John Doe</span>
-                        </a>
-                    </li>
-                    <li class="list-inline-item">
-                        <i class="ti-timer"></i>3 Min To Read
-                    </li>
-                    <li class="list-inline-item">
-                        <i class="ti-calendar"></i>15 jan, 2020
-                    </li>
-                    <li class="list-inline-item">
-                        <ul class="card-meta-tag list-inline">
-                        <li class="list-inline-item"><a href="tags.html">Demo</a></li>
-                        <li class="list-inline-item"><a href="tags.html">Elements</a></li>
-                        </ul>
-                    </li>
-                    </ul>
-                    <p>Heading example Here is example of hedings. You can use this heading by following markdownify rules. For example: use # for heading 1 and use ###### for heading 6.</p>
-                    <a href="post-elements.html" class="btn btn-outline-primary">Read More</a>
-                </div>
-              </article>
-
-              <article class="card mb-4">
-              <div class="post-slider">
-                  <img src="images/post/post-3.jpg" class="card-img-top" alt="post-thumb" />
-              </div>
-              <div class="card-body">
-                  <h3 class="mb-3"><a class="post-title" href="post-details.html">Advice From a Twenty Something</a></h3>
-                  <ul class="card-meta list-inline">
-                  <li class="list-inline-item">
-                      <a href="author-single.html" class="card-meta-author">
-                      <img src="images/john-doe.jpg" />
-                      <span>Mark Dinn</span>
-                      </a>
-                  </li>
-                  <li class="list-inline-item">
-                      <i class="ti-timer"></i>2 Min To Read
-                  </li>
-                  <li class="list-inline-item">
-                      <i class="ti-calendar"></i>14 jan, 2020
-                  </li>
-                  <li class="list-inline-item">
-                      <ul class="card-meta-tag list-inline">
-                      <li class="list-inline-item"><a href="tags.html">Decorate</a></li>
-                      <li class="list-inline-item"><a href="tags.html">Creative</a></li>
-                      </ul>
-                  </li>
-                  </ul>
-                  <p>It’s no secret that the digital industry is booming. From exciting startups to global brands, companies are reaching out to digital agencies, responding to the new possibilities available.</p>
-                  <a href="post-details.html" class="btn btn-outline-primary">Read More</a>
-              </div>
-              </article>  
+              <Post />
               
               <ul class="pagination justify-content-center">
                 <li class="page-item page-item active ">
@@ -109,7 +46,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-    </>
+    </> 
   )
 }
 

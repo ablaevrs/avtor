@@ -1,4 +1,3 @@
-import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
 export default function TopBanner() {
@@ -39,5 +38,3 @@ export default function TopBanner() {
     </>
   )
 }
-
-const styles = StyleSheet.create({})
