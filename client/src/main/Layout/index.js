@@ -1,7 +1,17 @@
 import React from 'react'
-import { Outlet } from 'react-router-dom'
+import { Link, Outlet } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { logout, selectIsAuth } from '../../redux/slices/auth'
+
 
 export default function Layout () {
+  const isAuth = useSelector(selectIsAuth)
+  const dispatch = useDispatch()
+
+  function logoutHandler () {
+    dispatch(logout())
+  }
+
   return (
     <>
         <header className="navigation fixed-top">
@@ -51,6 +61,36 @@ export default function Layout () {
                 <li className="nav-item">
                     <a className="nav-link" href="shop.html">Shop</a>
                 </li>
+                { isAuth ? 
+                    (   <>
+                        <li className="nav-item">
+                        <Link className="nav-link" to="/login">Login</Link>
+                        </li>
+                        <li className="nav-item">
+                        <Link className="nav-link" to="/register">Register</Link>
+                        </li>
+                        </>
+                    ) : 
+                    (
+                        <>
+                        <li className="nav-item">
+                            <button 
+                                className="nav-link"
+                                onClick={logoutHandler} 
+                            >Logout</button>
+                        </li>
+                        <li className="nav-item">
+                            <Link className="nav-link" to="/addpost">Add Post</Link>
+                        </li>
+                        </>
+                    )
+                }
+                <li className="nav-item">
+                    <Link className="nav-link" to="/login">Login</Link>
+                </li>
+                <li className="nav-item">
+                    <Link className="nav-link" to="/register">Register</Link>
+                </li>
                 </ul>
             </div>
         
@@ -59,14 +99,6 @@ export default function Layout () {
                 <option id="en" value="" selected>En</option>
                 <option id="fr" value="">Fr</option>
                 </select>
-                
-                <form className="search-bar">
-                <input id="search-query" name="s" type="search" placeholder="Type &amp; Hit Enter..." />
-                </form>
-                
-                <button className="navbar-toggler border-0 order-1" type="button" data-toggle="collapse" data-target="#navigation">
-                <i className="ti-menu"></i>
-                </button>
             </div>
         
             </nav>

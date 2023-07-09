@@ -1,6 +1,20 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
+import axios from 'axios'
 
-export default function Post({ item }) {
+export default function Post() {
+  const [data, setData] = useState()
+  const { id } = useParams()
+
+  useEffect(() => {
+    axios.get(`/posts/${id}`).then(res => {
+      setData(res.data)
+    }).catch((err) => {
+      console.warn(err)
+      alert('Error during getting post')
+    })
+  }, [])
+
   return (
     <article class="card mb-4">
         <div class="post-slider">
@@ -14,11 +28,11 @@ export default function Post({ item }) {
             <li class="list-inline-item">
                 <a href="author-single.html" class="card-meta-author">
                 <img src="images/john-doe.jpg" />
-                <span>{ item.firstName } { item.lastName }</span>
+                <span>{ data?.firstName } { data?.lastName }</span>
                 </a>
             </li>
             <li class="list-inline-item">
-                <i class="ti-calendar"></i>{ item.createdAt }
+                <i class="ti-calendar"></i>{ data?.createdAt }
             </li>
             <li class="list-inline-item">
                 <ul class="card-meta-tag list-inline">
@@ -27,8 +41,8 @@ export default function Post({ item }) {
                 </ul>
             </li>
             </ul>
-            <p>{ item.description }</p>
-            <a href={ '/posts/' + item._id } class="btn btn-outline-primary">Read More</a>
+            <p>{ data?.description }</p>
+            <a href='' class="btn btn-outline-primary">Read More</a>
         </div>
     </article> 
 

@@ -32,11 +32,11 @@ export default function Home() {
               { 
                 (
                   isPostsLoading ? [...Array(5)] : posts.items.posts).map((item, index) => 
-                  isPostsLoading ? (
-                    <Post key={index} isLoading={true} />
-                  ) : (
-                    <Post item={item} />
-                  )
+                  // isPostsLoading ? (
+                  //   <Post key={index} isLoading={true} />
+                  // ) : (
+                    <Post item={item || []} />
+                  // )
                 )
               }
               
