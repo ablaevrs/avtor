@@ -1,11 +1,12 @@
 import React from 'react'
 
-export default function Post({ item }) {
+export default function Post({ item, isOwner }) {
   return (
     <article class="card mb-4">
         <div class="post-slider">
             <img src="images/post/post-3.jpg" class="card-img-top" alt="post-thumb" />
         </div>
+        { isOwner && console.log('it is my post!!!!!') }
         <div class="card-body">
             <h3 class="mb-3">
                 <a class="post-title" href="post-details.html">Advice From a Twenty Something</a>

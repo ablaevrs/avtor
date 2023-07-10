@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import axios from "../../axios";
 
 // для логина мы используем метод пост, потому что нам надо передать туда данные по апи и в 
 // соответствии с логином и паролем получить нужного пользователя
@@ -7,15 +7,23 @@ import axios from "axios";
 export const fetchAuth = createAsyncThunk(
     'auth/fetchAuth', 
     async (params) => {
-        const { data } = await axios.post('http://localhost:5000/auth/login', params)
+        const { data } = await axios.post('/auth/login', params)
         return data
     }
 )
 
-export const fetchPosts = createAsyncThunk(
-    'posts/fetchPosts', 
-    async function () {
-        const { data } = await axios.get('http://localhost:5000/post')
+export const fetchAuthMe = createAsyncThunk(
+    'auth/fetchAuthMe', 
+    async () => {
+        const { data } = await axios.get('/auth/me')
+        return data
+    }
+)
+
+export const fetchRegister = createAsyncThunk(
+    'auth/fetchRegister', 
+    async (params) => {
+        const { data } = await axios.post('/auth/register', params)
         return data
     }
 )
@@ -43,6 +51,32 @@ const authSlice = createSlice({
             state.status = 'loaded'
         },
         [fetchAuth.rejected]: (state, action) => {
+            state.data = null
+            state.status = 'error'
+        },
+
+        [fetchAuthMe.pending]: (state, action) => {
+            state.data = null
+            state.status = 'loading'
+        },
+        [fetchAuthMe.fulfilled]: (state, action) => {
+            state.data = action.payload
+            state.status = 'loaded'
+        },
+        [fetchAuthMe.rejected]: (state, action) => {
+            state.data = null
+            state.status = 'error'
+        },
+
+        [fetchRegister.pending]: (state, action) => {
+            state.data = null
+            state.status = 'loading'
+        },
+        [fetchRegister.fulfilled]: (state, action) => {
+            state.data = action.payload
+            state.status = 'loaded'
+        },
+        [fetchRegister.rejected]: (state, action) => {
             state.data = null
             state.status = 'error'
         }

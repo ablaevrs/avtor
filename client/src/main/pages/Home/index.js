@@ -14,6 +14,7 @@ export default function Home() {
     dispatch(fetchPosts())
   }, [dispatch])
 
+  const userData = useSelector(state => state.auth.data)
   const { posts } = useSelector(state => state.posts)
   console.log('posts', posts)
 
@@ -35,7 +36,10 @@ export default function Home() {
                   // isPostsLoading ? (
                   //   <Post key={index} isLoading={true} />
                   // ) : (
-                    <Post item={item || []} />
+                    <Post 
+                      item={item || []}
+                      isOwner={ userData?._id === item?.userId } 
+                    />
                   // )
                 )
               }

@@ -13,15 +13,23 @@ export default function Login() {
   const isAuth = useSelector(selectIsAuth)
   const dispatch = useDispatch()
 
-  console.log('isAuth', isAuth)
-
   async function onSubmit (e) {
     e.preventDefault
-    const data = {
+    const values = {
       email,
       password
     }
-    dispatch(fetchAuth(data))
+    const data = await dispatch(fetchAuth(values))
+
+    if (!data.payload) {
+      return alert('Не удалось авторизоваться')
+    }
+
+    // если авторизация прошла успешно, то сохраняем в локалсторадж наш токен, по которому
+    // мы потом будем проверять авторизацию
+    if ('token' in data.payload) {
+      window.localStorage.setItem('token', data.payload.token)
+    } 
   }
 
   if (isAuth) {

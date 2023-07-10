@@ -1,17 +1,22 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link, Outlet } from 'react-router-dom'
-import { useSelector } from 'react-redux'
-import { logout, selectIsAuth } from '../../redux/slices/auth'
-
+import { useDispatch, useSelector } from 'react-redux'
+import { logout, selectIsAuth, fetchAuthMe } from '../../redux/slices/auth'
 
 export default function Layout () {
   const isAuth = useSelector(selectIsAuth)
   const dispatch = useDispatch()
 
+  useEffect (() => {
+    dispatch(fetchAuthMe())
+  }, [])
+
   function logoutHandler () {
     dispatch(logout())
+    window.localStorage.removeItem('token')
   }
 
+  console.log('isAuth', isAuth)
   return (
     <>
         <header className="navigation fixed-top">
@@ -61,13 +66,13 @@ export default function Layout () {
                 <li className="nav-item">
                     <a className="nav-link" href="shop.html">Shop</a>
                 </li>
-                { isAuth ? 
+                { !isAuth ? 
                     (   <>
                         <li className="nav-item">
-                        <Link className="nav-link" to="/login">Login</Link>
+                            <Link className="nav-link" to="/login">Login</Link>
                         </li>
                         <li className="nav-item">
-                        <Link className="nav-link" to="/register">Register</Link>
+                            <Link className="nav-link" to="/signup">Register</Link>
                         </li>
                         </>
                     ) : 
@@ -80,17 +85,11 @@ export default function Layout () {
                             >Logout</button>
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link" to="/addpost">Add Post</Link>
+                            <Link className="nav-link" to="/add-post">Add Post</Link>
                         </li>
                         </>
                     )
                 }
-                <li className="nav-item">
-                    <Link className="nav-link" to="/login">Login</Link>
-                </li>
-                <li className="nav-item">
-                    <Link className="nav-link" to="/register">Register</Link>
-                </li>
                 </ul>
             </div>
         

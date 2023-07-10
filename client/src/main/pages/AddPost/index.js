@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchRegister, selectIsAuth } from '../../../redux/slices/auth'
 import { Navigate } from 'react-router-dom'
 
-export default function Signup() {
+export default function AddPost() {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
